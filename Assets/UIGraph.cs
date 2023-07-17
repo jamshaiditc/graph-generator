@@ -8,12 +8,14 @@ public class UIGraph : MonoBehaviour
     public List<Vector2> dataPoints = new List<Vector2>();
 
     public float xMin, xMax, yMin, yMax;
-    public float xDivision, yDivision; // Added xDivision and yDivision variables
+    public float xDivision, yDivision;
     public Color pointColor = Color.white;
     public Color lineColor = Color.white;
     public Color xAxisColor = Color.white;
     public Color yAxisColor = Color.white;
     public Color textColor = Color.white;
+
+    private int currentIndex = 0;
 
     private void Start()
     {
@@ -39,7 +41,7 @@ public class UIGraph : MonoBehaviour
         {
             float xValue = xMin + i * xDivisionInterval;
             float xPosition = Mathf.InverseLerp(xMin, xMax, xValue) * graphContainer.sizeDelta.x;
-            CreateText(new Vector2(xPosition, -20f), xValue.ToString("F1"));
+            CreateText(new Vector2(xPosition, -40f), xValue.ToString("F1"));
 
             // Add X-axis markings
             CreateLine(new Vector2(xPosition, 0f), new Vector2(xPosition, -10f), xAxisColor);
@@ -50,13 +52,13 @@ public class UIGraph : MonoBehaviour
         {
             float yValue = yMin + i * yDivisionInterval;
             float yPosition = Mathf.InverseLerp(yMin, yMax, yValue) * graphContainer.sizeDelta.y;
-            CreateText(new Vector2(-20f, yPosition), yValue.ToString("F1"));
+            CreateText(new Vector2(-40f, yPosition), yValue.ToString("F1"));
 
             // Add Y-axis markings
             CreateLine(new Vector2(0f, yPosition), new Vector2(-10f, yPosition), yAxisColor);
         }
 
-        for (int i = 0; i < dataPoints.Count; i++)
+        for (int i = 0; i < currentIndex; i++)
         {
             float xPosition = Mathf.InverseLerp(xMin, xMax, dataPoints[i].x) * graphContainer.sizeDelta.x;
             float yPosition = Mathf.InverseLerp(yMin, yMax, dataPoints[i].y) * graphContainer.sizeDelta.y;
@@ -74,8 +76,6 @@ public class UIGraph : MonoBehaviour
             CreateText(new Vector2(xPosition + 75f, yPosition), "(" + dataPoints[i].x.ToString("F1") + ", " + dataPoints[i].y.ToString("F1") + ")");
         }
     }
-
-
 
     private void CreatePoint(Vector2 anchoredPosition)
     {
@@ -124,5 +124,32 @@ public class UIGraph : MonoBehaviour
         labelText.verticalOverflow = VerticalWrapMode.Overflow;
 
         textObj.transform.SetAsLastSibling();
+    }
+
+    public void AddDataPoint()
+    {
+        if (currentIndex < dataPoints.Count)
+        {
+            // Get the current data point
+            Vector2 currentDataPoint = dataPoints[currentIndex];
+
+            // Calculate the position of the data point on the graph
+            float xPosition = Mathf.InverseLerp(xMin, xMax, currentDataPoint.x) * graphContainer.sizeDelta.x;
+            float yPosition = Mathf.InverseLerp(yMin, yMax, currentDataPoint.y) * graphContainer.sizeDelta.y;
+
+            // Draw the data point and line (if applicable)
+            if (currentIndex > 0)
+            {
+                Vector2 prevDataPoint = dataPoints[currentIndex - 1];
+                float prevXPosition = Mathf.InverseLerp(xMin, xMax, prevDataPoint.x) * graphContainer.sizeDelta.x;
+                float prevYPosition = Mathf.InverseLerp(yMin, yMax, prevDataPoint.y) * graphContainer.sizeDelta.y;
+                CreateLine(new Vector2(prevXPosition, prevYPosition), new Vector2(xPosition, yPosition), lineColor);
+            }
+            CreatePoint(new Vector2(xPosition, yPosition));
+            CreateText(new Vector2(xPosition + 75f, yPosition), "(" + currentDataPoint.x.ToString("F1") + ", " + currentDataPoint.y.ToString("F1") + ")");
+
+            // Increment the current index
+            currentIndex++;
+        }
     }
 }
