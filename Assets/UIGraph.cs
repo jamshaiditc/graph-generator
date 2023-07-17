@@ -8,6 +8,7 @@ public class UIGraph : MonoBehaviour
     public List<Vector2> dataPoints = new List<Vector2>();
 
     public float xMin, xMax, yMin, yMax;
+    public float xDivision, yDivision; // Added xDivision and yDivision variables
     public Color pointColor = Color.white;
     public Color lineColor = Color.white;
     public Color xAxisColor = Color.white;
@@ -29,21 +30,27 @@ public class UIGraph : MonoBehaviour
         // Create Y-axis line
         CreateLine(new Vector2(0f, 0f), new Vector2(0f, graphContainer.sizeDelta.y), yAxisColor);
 
+        // Calculate xDivisionInterval and yDivisionInterval
+        float xDivisionInterval = (xMax - xMin) / xDivision;
+        float yDivisionInterval = (yMax - yMin) / yDivision;
+
         // Add X-axis text and markings
-        for (int i = 0; i < dataPoints.Count; i++)
+        for (int i = 0; i <= xDivision; i++)
         {
-            float xPosition = Mathf.InverseLerp(xMin, xMax, dataPoints[i].x) * graphContainer.sizeDelta.x;
-            CreateText(new Vector2(xPosition, -20f), dataPoints[i].x.ToString("F0"));
+            float xValue = xMin + i * xDivisionInterval;
+            float xPosition = Mathf.InverseLerp(xMin, xMax, xValue) * graphContainer.sizeDelta.x;
+            CreateText(new Vector2(xPosition, -20f), xValue.ToString("F1"));
 
             // Add X-axis markings
             CreateLine(new Vector2(xPosition, 0f), new Vector2(xPosition, -10f), xAxisColor);
         }
 
         // Add Y-axis text and markings
-        for (int i = 0; i < dataPoints.Count; i++)
+        for (int i = 0; i <= yDivision; i++)
         {
-            float yPosition = Mathf.InverseLerp(yMin, yMax, dataPoints[i].y) * graphContainer.sizeDelta.y;
-            CreateText(new Vector2(-20f, yPosition), dataPoints[i].y.ToString("F0"));
+            float yValue = yMin + i * yDivisionInterval;
+            float yPosition = Mathf.InverseLerp(yMin, yMax, yValue) * graphContainer.sizeDelta.y;
+            CreateText(new Vector2(-20f, yPosition), yValue.ToString("F1"));
 
             // Add Y-axis markings
             CreateLine(new Vector2(0f, yPosition), new Vector2(-10f, yPosition), yAxisColor);
@@ -64,9 +71,11 @@ public class UIGraph : MonoBehaviour
             CreatePoint(new Vector2(xPosition, yPosition));
 
             // Add data point text
-            CreateText(new Vector2(xPosition, yPosition + 40f), "(" + dataPoints[i].x.ToString("F0") + ", " + dataPoints[i].y.ToString("F0") + ")");
+            CreateText(new Vector2(xPosition + 75f, yPosition), "(" + dataPoints[i].x.ToString("F1") + ", " + dataPoints[i].y.ToString("F1") + ")");
         }
     }
+
+
 
     private void CreatePoint(Vector2 anchoredPosition)
     {

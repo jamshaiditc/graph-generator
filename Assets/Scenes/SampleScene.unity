@@ -562,6 +562,8 @@ MonoBehaviour:
   xMax: 5
   yMin: 0
   yMax: 5
+  xDivision: 20
+  yDivision: 5
   pointColor: {r: 1, g: 0, b: 0, a: 1}
   lineColor: {r: 0, g: 0.071101665, b: 1, a: 0.42352942}
   xAxisColor: {r: 0, g: 0, b: 0, a: 1}
