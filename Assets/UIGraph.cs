@@ -45,7 +45,7 @@ public class UIGraph : MonoBehaviour
             float xValue = xMin + i * xDivisionInterval;
             float xPosition = Mathf.InverseLerp(xMin, xMax, xValue) * graphContainer.sizeDelta.x;
             CreateText(new Vector2(xPosition, -40f), xValue.ToString("F1"), textColor);
-            CreateLine(new Vector2(xPosition, -5f), new Vector2(xPosition, 5f), xAxisColor); // Add X-axis markings
+            CreateLine(new Vector2(xPosition, -5f), new Vector2(xPosition, 5f), xAxisColor); 
         }
 
         // Add Y-axis text and markings
@@ -54,13 +54,11 @@ public class UIGraph : MonoBehaviour
             float yValue = yMin + i * yDivisionInterval;
             float yPosition = Mathf.InverseLerp(yMin, yMax, yValue) * graphContainer.sizeDelta.y;
             CreateText(new Vector2(-40f, yPosition), yValue.ToString("F1"), textColor);
-            CreateLine(new Vector2(-5f, yPosition), new Vector2(5f, yPosition), yAxisColor); // Add Y-axis markings
+            CreateLine(new Vector2(-5f, yPosition), new Vector2(5f, yPosition), yAxisColor); 
         }
 
-        // Add X-axis label
         CreateText(new Vector2(graphContainer.sizeDelta.x * 0.5f, -70f), xAxisLabel, xAxisLabelColor);
 
-        // Add Y-axis label
         CreateText(new Vector2(-70f, graphContainer.sizeDelta.y * 0.5f), yAxisLabel, yAxisLabelColor);
     }
 
