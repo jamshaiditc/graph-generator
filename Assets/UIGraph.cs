@@ -57,7 +57,11 @@ public class UIGraph : MonoBehaviour
             CreateLine(new Vector2(-5f, yPosition), new Vector2(5f, yPosition), yAxisColor); // Add Y-axis markings
         }
 
-        // Rest of the code...
+        // Add X-axis label
+        CreateText(new Vector2(graphContainer.sizeDelta.x * 0.5f, -70f), xAxisLabel, xAxisLabelColor);
+
+        // Add Y-axis label
+        CreateText(new Vector2(-70f, graphContainer.sizeDelta.y * 0.5f), yAxisLabel, yAxisLabelColor);
     }
 
 
