@@ -559,12 +559,10 @@ MonoBehaviour:
   yMax: 100
   xDivision: 20
   yDivision: 20
-  pointColor: {r: 1, g: 1, b: 1, a: 1}
-  lineColor: {r: 1, g: 1, b: 1, a: 1}
-  xAxisColor: {r: 1, g: 1, b: 1, a: 1}
-  yAxisColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 1, g: 1, b: 1, a: 1}
+  pointColor: {r: 1, g: 0, b: 0, a: 1}
+  lineColor: {r: 0, g: 0.22120595, b: 1, a: 1}
+  axisColor: {r: 1, g: 1, b: 1, a: 1}
+  textColor: {r: 1, g: 0, b: 0.9468107, a: 1}
   xAxisLabel: X-axis
   yAxisLabel: Y-axis
-  xAxisLabelColor: {r: 1, g: 1, b: 1, a: 1}
-  yAxisLabelColor: {r: 1, g: 1, b: 1, a: 1}
+  axisLabelColor: {r: 1, g: 1, b: 1, a: 1}
