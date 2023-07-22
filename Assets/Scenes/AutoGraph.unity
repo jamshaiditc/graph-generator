@@ -203,6 +203,7 @@ GameObject:
   - component: {fileID: 678225378}
   - component: {fileID: 678225377}
   - component: {fileID: 678225376}
+  - component: {fileID: 678225379}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -292,6 +293,35 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &678225379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 678225374}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10820356bf36c1c4a946016490309ade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  graphContainer: {fileID: 0}
+  dataPoints: []
+  xMin: 0
+  xMax: 0
+  yMin: 0
+  yMax: 0
+  xDivision: 0
+  yDivision: 0
+  pointColor: {r: 1, g: 1, b: 1, a: 1}
+  lineColor: {r: 1, g: 1, b: 1, a: 1}
+  xAxisColor: {r: 1, g: 1, b: 1, a: 1}
+  yAxisColor: {r: 1, g: 1, b: 1, a: 1}
+  textColor: {r: 1, g: 1, b: 1, a: 1}
+  xAxisLabel: X-axis
+  yAxisLabel: Y-axis
+  xAxisLabelColor: {r: 1, g: 1, b: 1, a: 1}
+  yAxisLabelColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -417,10 +447,10 @@ RectTransform:
   m_Father: {fileID: 678225375}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 250, y: 250}
+  m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &963194225
 GameObject:
@@ -498,8 +528,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 25.2, y: 16.05, z: -26.78}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 429.25, y: 403, z: -1177.5646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -551,18 +581,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be4e9774d6cd3444c9e224fd2b1203fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  graphContainer: {fileID: 678225375}
+  graphContainer: {fileID: 718812489}
   dataPoints: []
   xMin: 0
-  xMax: 100
+  xMax: 10
   yMin: 0
-  yMax: 100
-  xDivision: 20
-  yDivision: 20
-  pointColor: {r: 1, g: 0, b: 0, a: 1}
-  lineColor: {r: 0, g: 0.22120595, b: 1, a: 1}
-  axisColor: {r: 1, g: 1, b: 1, a: 1}
-  textColor: {r: 1, g: 0, b: 0.9468107, a: 1}
+  yMax: 10
+  xDivision: 10
+  yDivision: 10
+  pointColor: {r: 0.09450245, g: 0, b: 1, a: 1}
+  lineColor: {r: 0.9643636, g: 1, b: 0, a: 1}
+  axisColor: {r: 0, g: 0, b: 0, a: 1}
+  textColor: {r: 1, g: 1, b: 1, a: 1}
   xAxisLabel: X-axis
   yAxisLabel: Y-axis
   axisLabelColor: {r: 1, g: 1, b: 1, a: 1}

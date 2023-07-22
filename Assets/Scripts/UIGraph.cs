@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class AutoGraph : MonoBehaviour
+public class UIGraph : MonoBehaviour
 {
     public RectTransform graphContainer;
     public List<Vector2> dataPoints = new List<Vector2>();
@@ -11,48 +11,57 @@ public class AutoGraph : MonoBehaviour
     public float xDivision, yDivision;
     public Color pointColor = Color.white;
     public Color lineColor = Color.white;
-    public Color axisColor = Color.white;
+    public Color xAxisColor = Color.white;
+    public Color yAxisColor = Color.white;
     public Color textColor = Color.white;
 
     public string xAxisLabel = "X-axis";
     public string yAxisLabel = "Y-axis";
-    public Color axisLabelColor = Color.white;
+    public Color xAxisLabelColor = Color.white;
+    public Color yAxisLabelColor = Color.white;
 
     private int currentIndex = 0;
 
     private void Start()
     {
         ShowGraph();
-        InvokeRepeating("AddDataPoint", 0f, 0.1f);
     }
 
     private void ShowGraph()
     {
-        CreateLine(new Vector2(0f, 0f), new Vector2(graphContainer.sizeDelta.x, 0f), axisColor); // X-axis
-        CreateLine(new Vector2(0f, 0f), new Vector2(0f, graphContainer.sizeDelta.y), axisColor); // Y-axis
+        // Create X-axis line
+        CreateLine(new Vector2(0f, 0f), new Vector2(graphContainer.sizeDelta.x, 0f), xAxisColor);
 
+        // Create Y-axis line
+        CreateLine(new Vector2(0f, 0f), new Vector2(0f, graphContainer.sizeDelta.y), yAxisColor);
+
+        // Calculate xDivisionInterval and yDivisionInterval
         float xDivisionInterval = (xMax - xMin) / xDivision;
         float yDivisionInterval = (yMax - yMin) / yDivision;
 
-        // X-axis markings
+        // Add X-axis text and markings
         for (int i = 0; i <= xDivision; i++)
         {
             float xValue = xMin + i * xDivisionInterval;
             float xPosition = Mathf.InverseLerp(xMin, xMax, xValue) * graphContainer.sizeDelta.x;
-            CreateLine(new Vector2(xPosition, -5f), new Vector2(xPosition, 5f), axisColor);
+            CreateText(new Vector2(xPosition, -40f), xValue.ToString("F1"), textColor);
+            CreateLine(new Vector2(xPosition, -5f), new Vector2(xPosition, 5f), xAxisColor);
         }
 
-        // Y-axis markings
+        // Add Y-axis text and markings
         for (int i = 0; i <= yDivision; i++)
         {
             float yValue = yMin + i * yDivisionInterval;
             float yPosition = Mathf.InverseLerp(yMin, yMax, yValue) * graphContainer.sizeDelta.y;
-            CreateLine(new Vector2(-5f, yPosition), new Vector2(5f, yPosition), axisColor);
+            CreateText(new Vector2(-40f, yPosition), yValue.ToString("F1"), textColor);
+            CreateLine(new Vector2(-5f, yPosition), new Vector2(5f, yPosition), yAxisColor);
         }
 
-        CreateText(new Vector2(graphContainer.sizeDelta.x * 0.5f, -70f), xAxisLabel, axisLabelColor);
-        CreateText(new Vector2(-70f, graphContainer.sizeDelta.y * 0.5f), yAxisLabel, axisLabelColor);
+        CreateText(new Vector2(graphContainer.sizeDelta.x * 0.5f, -70f), xAxisLabel, xAxisLabelColor);
+
+        CreateText(new Vector2(-70f, graphContainer.sizeDelta.y * 0.5f), yAxisLabel, yAxisLabelColor);
     }
+
 
     private void CreatePoint(Vector2 anchoredPosition)
     {
@@ -98,6 +107,7 @@ public class AutoGraph : MonoBehaviour
         labelText.horizontalOverflow = HorizontalWrapMode.Overflow;
         labelText.verticalOverflow = VerticalWrapMode.Overflow;
 
+        // Rotate Y-axis label 90 degrees
         if (anchoredPosition.x < 0f)
         {
             textRectTransform.Rotate(new Vector3(0f, 0f, 90f));
@@ -107,45 +117,52 @@ public class AutoGraph : MonoBehaviour
 
     public void AddDataPoint()
     {
-        float xValue = xMin + currentIndex;
-        float yValue = Random.Range(yMin, yMax);
-        Vector2 dataPoint = new Vector2(xValue, yValue);
-        dataPoints.Add(dataPoint);
-
-        if (currentIndex > 0 && currentIndex < dataPoints.Count)
+        if (currentIndex < dataPoints.Count)
         {
+            // Get the current data point
             Vector2 currentDataPoint = dataPoints[currentIndex];
+
+            // Calculate the position of the data point on the graph
             float xPosition = Mathf.InverseLerp(xMin, xMax, currentDataPoint.x) * graphContainer.sizeDelta.x;
             float yPosition = Mathf.InverseLerp(yMin, yMax, currentDataPoint.y) * graphContainer.sizeDelta.y;
 
-            Vector2 prevDataPoint = dataPoints[currentIndex - 1];
-            float prevXPosition = Mathf.InverseLerp(xMin, xMax, prevDataPoint.x) * graphContainer.sizeDelta.x;
-            float prevYPosition = Mathf.InverseLerp(yMin, yMax, prevDataPoint.y) * graphContainer.sizeDelta.y;
+            // Draw the data point and line (if applicable)
+            if (currentIndex > 0)
+            {
+                Vector2 prevDataPoint = dataPoints[currentIndex - 1];
+                float prevXPosition = Mathf.InverseLerp(xMin, xMax, prevDataPoint.x) * graphContainer.sizeDelta.x;
+                float prevYPosition = Mathf.InverseLerp(yMin, yMax, prevDataPoint.y) * graphContainer.sizeDelta.y;
+                CreateLine(new Vector2(prevXPosition, prevYPosition), new Vector2(xPosition, yPosition), lineColor);
+            }
+            CreatePoint(new Vector2(xPosition, yPosition));
+            CreateText(new Vector2(xPosition + 75f, yPosition), "(" + currentDataPoint.x.ToString("F1") + ", " + currentDataPoint.y.ToString("F1") + ")", textColor);
 
-            CreateLine(new Vector2(prevXPosition, prevYPosition), new Vector2(xPosition, yPosition), lineColor);
-        }
-
-        float xPositionNew = Mathf.InverseLerp(xMin, xMax, xValue) * graphContainer.sizeDelta.x;
-        float yPositionNew = Mathf.InverseLerp(yMin, yMax, yValue) * graphContainer.sizeDelta.y;
-        CreatePoint(new Vector2(xPositionNew, yPositionNew));
-
-        currentIndex++;
-
-        if (currentIndex >= xMax) // Change the threshold to the desired number of data points
-        {
-            ClearGraph();
-            ShowGraph();
+            // Increment the current index
+            currentIndex++;
         }
     }
-
-    private void ClearGraph()
+    public void RemoveDataPoint()
     {
-        foreach (Transform child in graphContainer)
+        if (currentIndex > 0)
         {
-            Destroy(child.gameObject);
-        }
+            currentIndex--;
 
-        dataPoints.Clear();
-        currentIndex = 0;
+            // Get the current data point
+            Vector2 currentDataPoint = dataPoints[currentIndex];
+
+            // Calculate the position of the data point on the graph
+            float xPosition = Mathf.InverseLerp(xMin, xMax, currentDataPoint.x) * graphContainer.sizeDelta.x;
+            float yPosition = Mathf.InverseLerp(yMin, yMax, currentDataPoint.y) * graphContainer.sizeDelta.y;
+
+            // Remove the last data point's elements from the graph
+            Transform graphContainerTransform = graphContainer.transform;
+            int childCount = graphContainerTransform.childCount;
+            Destroy(graphContainerTransform.GetChild(childCount - 1).gameObject); // Remove the point
+            Destroy(graphContainerTransform.GetChild(childCount - 2).gameObject); // Remove the text
+            if (currentIndex > 0)
+            {
+                Destroy(graphContainerTransform.GetChild(childCount - 3).gameObject); // Remove the line
+            }
+        }
     }
 }
