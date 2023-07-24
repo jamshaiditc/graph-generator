@@ -60,6 +60,7 @@
     <Compile Include="Assets\Scripts\UIGraph1.cs" />
     <Compile Include="Assets\Scripts\AutoGraph1.cs" />
     <Compile Include="Assets\Scripts\UIGraph.cs" />
+    <Compile Include="Assets\Scripts\AutoGraph2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
